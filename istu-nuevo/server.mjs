@@ -16,4 +16,4 @@ http.createServer(async (req,res) => {
     res.writeHead(200, {'Content-Type':types[path.extname(filename)] || 'application/octet-stream', 'X-Content-Type-Options':'nosniff', 'Cache-Control':'no-cache'});
     res.end(body);
   } catch { res.writeHead(404, {'Content-Type':'text/plain; charset=utf-8'}); res.end('Página no encontrada'); }
-}).listen(port, '127.0.0.1', () => console.log(`ISTU listo: http://localhost:${port}`));
+}).listen(port, '0.0.0.0', () => console.log(`ISTU listo en el puerto ${port}`));
