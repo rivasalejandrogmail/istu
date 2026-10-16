@@ -1,0 +1,14 @@
+import {readFile,access} from 'node:fs/promises';
+import {Script} from 'node:vm';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
+const html=await readFile(path.join(root,'dist/index.html'),'utf8');
+const files=[...html.matchAll(/(?:src|href)="\.\/([^"#]+)"/g)].map(match=>match[1]);
+files.push('assets/software.jpg','assets/systems.jpg','assets/data.jpg','assets/tourism.jpg','assets/people.jpg');
+await Promise.all(files.map(file=>access(path.join(root,'dist',file))));
+const ids=[...html.matchAll(/\bid="([^"]+)"/g)].map(match=>match[1]);
+if(new Set(ids).size!==ids.length) throw new Error('Se encontraron IDs duplicados');
+for (const match of html.matchAll(/href="#([^"]+)"/g)) if(!ids.includes(match[1])) throw new Error('Ancla sin destino: '+match[1]);
+new Script(await readFile(path.join(root,'dist/app.js'),'utf8'),{filename:'app.js'});
+console.log(`Verificado: JavaScript válido, ${files.length} recursos presentes, IDs únicos y navegación interna completa. dist/ está listo para hosting estático.`);

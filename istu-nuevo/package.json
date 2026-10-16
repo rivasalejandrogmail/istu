@@ -1,0 +1,13 @@
+{
+  "name": "istu-nuevo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Propuesta web moderna para el Instituto Superior Técnico Urugua-í",
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "dev": "node server.mjs",
+    "build": "node scripts/check.mjs",
+    "check": "node scripts/check.mjs"
+  }
+}
